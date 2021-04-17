@@ -69,7 +69,7 @@ public class Person {
 
         // Question1
         // To calculate the average of all the people
-        System.out.println("\n Question 1:  ");
+        System.out.println("\n Question 1:  "); // Println prints in new line only, no need of "\n"
         double average=  people.stream()
                 .mapToInt(x-> x.getAge())
                 .average().orElse(0);
@@ -80,7 +80,7 @@ public class Person {
         System.out.println("\nQuestion 2: ");
         people.stream()
                 .filter(x-> x.name.toLowerCase().contains("a") || x.name.toLowerCase().contains("e")|| x.name.contains("i") || x.name.toLowerCase().contains("o")||x.name.toLowerCase().contains("u")|| x.age>20 )
-                .collect(Collectors.toList())
+                .collect(Collectors.toList()) // You can simply ignore this step because if you collect and then or simply print it's one and the same thing
                 .forEach(x->System.out.println(x));;
 
         //Question3
@@ -94,8 +94,11 @@ public class Person {
 
         people.stream()
                 //.sorted(Person::getSorted)
-                .sorted(Comparator.comparing(byAge).thenComparing(byTheirName))
-                .collect(Collectors.toList())
+//                 .sorted(Comparator.comparing(byAge).thenComparing(byTheirName)) // the logic is slightly incorrect, if the ages are same then you sort in descneding order by name
+                
+            // The following is the correct one
+                .sorted(Comparator.comparing(byAge).thenComparing(byTheirName, Comparator.reverseOrder()))
+                .collect(Collectors.toList()) // Again, it's a redundant step
                 .forEach(x->System.out.println(x+" "+x.age));
 
 
@@ -111,15 +114,22 @@ public class Person {
         Map<String,Integer> getCountryCount=people
                 .stream()
                 .collect(Collectors.toMap(x->x.country,x->1,Integer::sum));
+        
+        // Although, the above solution is correct, but the following one is more descriptive
+        
+        Map<String,Long> getCountryCount2=people
+                .stream()
+                .collect(Collectors.groupingBy(Person::getCountry, Collectors.counting()));
+
 
         System.out.println(getCountryCount);
-
+        
         //Question 5
         //Create a map which stores avg age of people per country
         // (key should be country and value should be average age i.e, double)
 
         System.out.println("\nQuestion 5:");
-
+        
         Map<String,Double> getCountryAgeAverage=
                 people.stream().collect(Collectors.groupingBy(x->x.country,Collectors.averagingDouble(x->x.age)));
 
@@ -137,13 +147,18 @@ public class Person {
                 .collect(Collectors.toMap(y->y.country,z->z.getAge(),Integer::max));
 
         System.out.println(getAverageAgeCountry);
+        
+        // You had to print oldest person for every country, not the age of the oldest person in every country
+        // Following is the correct solution
 
-
+        System.out.println(people.stream()
+                .collect(Collectors.groupingBy
+                        (Person::getCountry, Collectors.maxBy(Comparator.comparing(Person::getAge)))));
 
     }
 
-
-    }
+    
+}
 
 
 
