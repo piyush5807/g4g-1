@@ -3,12 +3,11 @@ package assignment2;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Person {
 
 
-    private static Map<String, Integer> countryCount;
+
     private int age;
     private String name;
     private String country;
