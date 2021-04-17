@@ -120,6 +120,10 @@ public class Person {
 
         System.out.println("\nQuestion 5:");
 
+        Map<String,Double> getCountryAgeAverage=
+                people.stream().collect(Collectors.groupingBy(x->x.country,Collectors.averagingDouble(x->x.age)));
+
+        System.out.println(getCountryAgeAverage);
 
 
 
