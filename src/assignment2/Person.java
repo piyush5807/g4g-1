@@ -1,10 +1,6 @@
 package assignment2;
 
-import org.jetbrains.annotations.Contract;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,6 +8,7 @@ import java.util.stream.Stream;
 public class Person {
 
 
+    private static Map<String, Integer> countryCount;
     private int age;
     private String name;
     private String country;
@@ -55,6 +52,7 @@ public class Person {
 
 
 
+
     public static void main(String[] args) {
 
         List<Person> people = Arrays.asList(
@@ -72,7 +70,7 @@ public class Person {
 
         // Question1
         // To calculate the average of all the people
-        System.out.println("Question 1: ");
+        System.out.println("\n Question 1:  ");
         double average=  people.stream()
                 .mapToInt(x-> x.getAge())
                 .average().orElse(0);
@@ -80,7 +78,7 @@ public class Person {
 
         // Question2
         // Create a list of all the people who are either greater than 20 or contain any vowel in their name (uppercase or lowercase)
-        System.out.println("Question 2: ");
+        System.out.println("\nQuestion 2: ");
         people.stream()
                 .filter(x-> x.name.toLowerCase().contains("a") || x.name.toLowerCase().contains("e")|| x.name.contains("i") || x.name.toLowerCase().contains("o")||x.name.toLowerCase().contains("u")|| x.age>20 )
                 .collect(Collectors.toList())
@@ -90,7 +88,7 @@ public class Person {
         //Create a list of people,
         // sorted in ascending order on the basis of age,
         // if age is the same then sort in descending order of name
-        System.out.println("Question 3: \n");
+        System.out.println("\nQuestion 3: ");
         // to get the Age and Names in Function which can later by used in comparator
         final Function<Person,Integer> byAge=person -> person.getAge();
         final Function<Person,String> byTheirName=person -> person.getName();
@@ -106,17 +104,43 @@ public class Person {
         //Q4. Create a map from this people list where the key is country name and
         // value is count which means a map will tell how many people live in a particular country
 
+        //people.stream().map()
+        System.out.println("\nQuestion 4: ");
+
+
+
+        Map<String,Integer> getCountryCount=people
+                .stream()
+                .collect(Collectors.toMap(x->x.country,x->1,Integer::sum));
+
+        System.out.println(getCountryCount);
+
+        //Question 5
+        //Create a map which stores avg age of people per country
+        // (key should be country and value should be average age i.e, double)
+
+        System.out.println("\nQuestion 5:");
 
 
 
 
+        //Question 6
+        //Print the oldest person in every country
 
+        System.out.println("\nQuestion 6:");
+
+        Map<String,Integer> getAverageAgeCountry=people
+                .stream()
+                .collect(Collectors.toMap(y->y.country,z->z.getAge(),Integer::max));
+
+        System.out.println(getAverageAgeCountry);
 
 
 
     }
 
 
+    }
 
 
-}
+
